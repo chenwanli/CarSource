@@ -51,6 +51,9 @@
 //    self.navigationController.navigationBarHidden = YES;
 //}
 
+- (void)viewWillAppear:(BOOL)animated{
+    self.navigationController.navigationBarHidden = YES;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -62,7 +65,12 @@
     [self initTabBar];
 //    [[SkinManager sharedSkinManager]addObserver:self forKeyPath:@"countTest" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
 
-
+    if (IOS8) {
+        self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:18/255.0 green:152/255.0 blue:234/255.0 alpha:1];
+    }else{
+        [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:18/255.0 green:152/255.0 blue:234/255.0 alpha:1]];
+    }
+    
 }
 
 //- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -221,7 +229,12 @@
 
     //  消息
     MessageViewController *community = [[MessageViewController alloc]init];
-
+    community.nextArray = ^(NSMutableArray *next,UIViewController *viewController){
+        self.navigationController.navigationBarHidden = NO;
+        [self.navigationController pushViewController:viewController animated: YES];
+    };
+    
+    
     //  我的
     MyProfileViewController *myProfile = [[MyProfileViewController alloc]init];
 

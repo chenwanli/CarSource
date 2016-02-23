@@ -11,7 +11,11 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-
+//容联
+@property (strong, nonatomic) NSString *callid;
++(AppDelegate*)shareInstance;
+-(void)updateSoftAlertViewShow:(NSString*)message isForceUpdate:(BOOL)isForce;
+-(void)toast:(NSString*)message;
 
 @end
 

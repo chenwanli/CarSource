@@ -28,18 +28,37 @@
         [LCCoolHUD showLoading:@"正在登录" inView:self.view];
         [RequestClass postLoginRequestWithTel:nameText password:password Completion:^(NSMutableArray *saleArray, NSString *errorMessage) {
             
-             [LCCoolHUD hideInView:self.view];
-            if ([errorMessage isEqualToString:@"0"]) {
-                NSLog(@"%@",saleArray);
-                [Serialization initSerializationArray:saleArray];
-                NSLog(@"Serialization %@",[Serialization initNSKeyedUnarchiver]);
-                ViewController *VC = [[ViewController alloc]init];
-                [self.navigationController pushViewController:VC animated:YES];
-            }
+            //            容联
+            ECLoginInfo * loginInfo = [[ECLoginInfo alloc] init];
+            loginInfo.username = nameText;
+            loginInfo.userPassword = @"";
+            loginInfo.appKey = [DemoGlobalClass sharedInstance].appKey;
+            loginInfo.appToken = [DemoGlobalClass sharedInstance].appToken;
+            loginInfo.authType = [DemoGlobalClass sharedInstance].loginAuthType;
+            loginInfo.mode = LoginMode_InputPassword;
+            [DemoGlobalClass sharedInstance].userPassword = @"";
+            [[DeviceDBHelper sharedInstance] openDataBasePath:nameText];
+            [DemoGlobalClass sharedInstance].isHiddenLoginError = NO;
+            [[ECDevice sharedInstance] login:loginInfo completion:^(ECError *error){
+                
+                
+                [LCCoolHUD hideInView:self.view];
+                if ([errorMessage isEqualToString:@"0"]) {
+                    
+                    NSLog(@"%@",saleArray);
+                    [Serialization initSerializationArray:saleArray];
+                    NSLog(@"Serialization %@",[Serialization initNSKeyedUnarchiver]);
+                    //                        ViewController *VC = [[ViewController alloc]init];
+                    //                        [self.navigationController pushViewController:VC animated:YES];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:KNOTIFICATION_onConnected object:error];
+                    if (error.errorCode == ECErrorType_NoError) {
+                        [DemoGlobalClass sharedInstance].userName = nameText;
+                    }
+                    
+                }
+            }];
         }];
-
-
-
     };
     login.registered = ^(NSString *registered){
         RegisteredViewController *registeredView = [[RegisteredViewController alloc]init];

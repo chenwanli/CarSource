@@ -11,7 +11,11 @@
 #import "TheSessionView.h"
 #import "MyFriendsView.h"
 
-@interface MessageViewController ()<UIScrollViewDelegate>{
+//容联
+#import "SessionViewController.h"
+#import "ContactListViewController.h"
+
+@interface MessageViewController ()<UIScrollViewDelegate,SlideSwitchSubviewDelegate>{
     UIButton *_btn;
     UIScrollView *_scrollView;
 }
@@ -19,6 +23,8 @@
 @end
 
 @implementation MessageViewController
+
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -72,14 +78,26 @@
     _scrollView.directionalLockEnabled = YES;
     [self.view addSubview:_scrollView];
 
-    TheSessionView *session = [[TheSessionView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 104-49)];
-    session.backgroundColor = [UIColor redColor];
-    [_scrollView addSubview:session];
+//    TheSessionView *session = [[TheSessionView alloc]initWithFrame:CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 104-49)];
+//    session.backgroundColor = [UIColor redColor];
+//    [_scrollView addSubview:session];
 
-
-    MyFriendsView *friends = [[MyFriendsView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 104-49)];
-    friends.backgroundColor = [UIColor greenColor];
-    [_scrollView addSubview:friends];
+    SessionViewController *sessionViewController = [[SessionViewController alloc]init];
+    sessionViewController.mainView = self;
+    sessionViewController.view.frame = CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 104);
+    [_scrollView addSubview:sessionViewController.view];
+    [self addChildViewController:sessionViewController];
+    
+//    MyFriendsView *friends = [[MyFriendsView alloc]initWithFrame:CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 104-49)];
+//    friends.backgroundColor = [UIColor greenColor];
+//    [_scrollView addSubview:friends];
+    
+    ContactListViewController *contactListViewController = [[ContactListViewController alloc]init];
+    contactListViewController.mainView = self;
+    contactListViewController.view.frame = CGRectMake(SCREEN_WIDTH, 0, SCREEN_WIDTH, SCREEN_HEIGHT - 104);
+    [_scrollView addSubview:contactListViewController.view];
+    [self addChildViewController:contactListViewController];
+    
     for (int i = 0; i < array.count; i++) {
         UIButton *typeButton  = [UIButton buttonWithType:UIButtonTypeCustom];
         typeButton.frame = CGRectMake(SCREEN_WIDTH/2 *i, 64, SCREEN_WIDTH/2, 40);
@@ -138,6 +156,15 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+
+#pragma mark - SlideSwitchSubviewDelegate
+- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated {
+//    [viewController.navigationItem setHidesBackButton:YES];
+//    [self.navigationController pushViewController:viewController animated:animated];
+    self.nextArray(nil,viewController);
+}
+
 
 /*
 #pragma mark - Navigation

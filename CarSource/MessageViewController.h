@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+typedef void (^nextDataArray) (NSMutableArray *next,UIViewController *viewController);
 @interface MessageViewController : UIViewController
-
+@property (nonatomic,strong)nextDataArray nextArray;
 @end

@@ -23,7 +23,13 @@
 #import "LoginModel.h"
 #import "NetworkRequest.h"
 #import "ResourcesRequest.h"
-                                      
+
+//容联
+#import "MBProgressHUD.h"
+#import "DeviceDelegateHelper.h"
+#import "ECDeviceHeaders.h"
+#import "DemoGlobalClass.h"
+
 ////APP接口
 //#define HTTPREQUEST @"http://www.m8ba.com/carsource/"
 ////图片地址
@@ -38,6 +44,7 @@
 #define SCREEN_FRAME ([UIScreen mainScreen].applicationFrame)
 #define SCREEN_WIDTH ([UIScreen mainScreen].bounds.size.width)
 #define SCREEN_HEIGHT ([UIScreen mainScreen].bounds.size.height)
+#define IOS8 ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0 ? YES:NO)
 #define SHOW_ALERT(msg) UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"温馨提示" message:msg delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];\
 [alert show];\
 
