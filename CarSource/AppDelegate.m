@@ -7,8 +7,43 @@
 //
 
 #import "AppDelegate.h"
+#import "IQKeyBoardManager.h"
+#import "ViewController.h"
+#import "LoginViewController.h"
+#import <RongIMKit/RongIMKit.h>
+//#import "RCDLoginViewController.h"
+//#import "RCDRCIMDataSource.h"
+//#import "RCDLoginInfo.h"
+#import <AudioToolbox/AudioToolbox.h>
+#import "UIImageView+WebCache.h"
+//#import "MBProgressHUD.h"
+//#import "UIColor+RCColor.h"
+//#import "RCWKRequestHandler.h"
+//#import "RCWKNotifier.h"
+//#import "RCDCommonDefine.h"
+//#import "RCDHttpTool.h"
+//#import "AFHttpTool.h"
+//#import "RCDataBaseManager.h"
+//#import "RCDTestMessage.h"
+//#import "MobClick.h"
+
+#define RONGCLOUD_IM_APPKEY @"z3v5yqkbv8v30" // online key
+
+#define UMENG_APPKEY @"563755cbe0f55a5cb300139c"
+
+#define iPhone6                                                                \
+([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
+? CGSizeEqualToSize(CGSizeMake(750, 1334),                              \
+[[UIScreen mainScreen] currentMode].size)           \
+: NO)
+#define iPhone6Plus                                                            \
+([UIScreen instancesRespondToSelector:@selector(currentMode)]                \
+? CGSizeEqualToSize(CGSizeMake(1242, 2208),                             \
+[[UIScreen mainScreen] currentMode].size)           \
+: NO)
 
 @interface AppDelegate ()
+//<RCWKAppInfoProvider>
 
 @end
 
@@ -17,7 +52,29 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    self.window.backgroundColor = [UIColor whiteColor];
+
+    [[RCIM sharedRCIM] initWithAppKey:@"YourTestAppKey"];
+
+//    ViewController *image = [[ViewController alloc]init];
+//    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:image];
+//    self.window.rootViewController = nav;
+
+
+    LoginViewController *login = [[LoginViewController alloc]init];
+    UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:login];
+    self.window.rootViewController = nav;
+
+    [IQKeyBoardManager installKeyboardManager];
+    [self.window makeKeyAndVisible];
+
     return YES;
+}
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [self.window endEditing:YES];
+     
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
